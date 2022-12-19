@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import render
 from rest_framework import generics, permissions
 from drf_api.permissions import IsOwnerOrReadOnly
@@ -14,6 +15,8 @@ class CommentList(generics.ListCreateAPIView):
     # in DRF we set the queryset attribute, possible to filter  out some of the model instances.
     # make sure users can access and query only their own data
     queryset = Comment.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['post']
 
     # make sure  comments are associated with a user upon creation.
     def perform_create(self, serializer):
